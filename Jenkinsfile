@@ -4,7 +4,6 @@ pipeline {
     environment {
         DOCKERHUB_CREDS = credentials('dockerhub-creds')
         IMAGE_NAME = "nacholiya/devops-prod-app"
-        KUBECONFIG_CRED = 'kubeconfig-creds'
     }
 
     stages {
@@ -45,8 +44,7 @@ pipeline {
                 sh '''
                 sed -i "s|image: .*|image: $IMAGE_NAME:$BUILD_NUMBER|" k8s/deployment.yaml
                 kubectl apply -f k8s/deployment.yaml
-                '''        
-                }
+                '''
             }
         }
     }
@@ -60,4 +58,3 @@ pipeline {
         }
     }
 }
-
