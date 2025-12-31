@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devops-prod-app
+  namespace: devops-prod
+  labels:
+    app: devops-prod-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: devops-prod-app
+  template:
+    metadata:
+      labels:
+        app: devops-prod-app
+    spec:
+      initContainers:
+      - name: init-setup
+        image: busybox
+        command:
+          - sh
+          - -c
+          - echo "Init completed successfully" > /work/status.txt
+        volumeMounts:
+        - name: init-volume
+          mountPath: /work
+      containers:
+      - name: app
+        image: devops-prod-app:1.0
+        imagePullPolicy: IfNotPresent
+        envFrom:
+          - configMapRef:
+              name: devops-prod-config
+          - secretRef:
+              name: devops-prod-secret
+        volumeMounts:
+          - name: init-volume
+            mountPath: /init
+        ports:
+          - containerPort: 5000
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "256Mi"
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 15
+          periodSeconds: 20
+      volumes: 
+      - name: init-volume
+        emptyDir: {}
+

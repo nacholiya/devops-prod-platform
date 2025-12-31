@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: devops-prod-service
+  namespace: devops-prod
+spec:
+  type: ClusterIP
+  selector:
+    app: devops-prod-app
+  ports:
+  - port: 80
+    targetPort: 5000
+
