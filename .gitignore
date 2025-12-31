@@ -43,3 +43,8 @@ build/
 dist/
 target/
 
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
