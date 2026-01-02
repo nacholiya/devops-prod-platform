@@ -19,7 +19,7 @@ A production-style DevOps platform demonstrating CI/CD automation, Kubernetes or
 
 ## 🏗️ Architecture Overview
 
-![Architecture Diagram](screenshots/architecture-diagram.png)
+![Architecture Diagram](screenshots/architectur_diagram.png)
 
 ### Architecture Flow
 1. Developer pushes code to GitHub
